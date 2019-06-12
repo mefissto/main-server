@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "fullstack app with angular and node",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app",
+    "app": "nodemon app.js"
+  },
+  "author": "Mefissto",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "express": "^4.16.4",
+    "express-swaggerize-ui": "^1.0.1",
+    "http-errors": "~1.6.3",
+    "mongoose": "^5.5.13",
+    "morgan": "~1.9.1",
+    "nodemon": "^1.19.1"
+  },
+  "devDependencies": {
+    "express-swagger-generator": "^1.1.0"
+  }
+}
