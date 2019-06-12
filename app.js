@@ -8,7 +8,7 @@ const swaggerUi = require('express-swaggerize-ui');
 
 const userRouter = require('./routes/users.router');
 const authRouter = require('./routes/auth.router');
-const { database } = require('./config');
+const { database } = require('./config/config');
 const { normalizePort, onError, onListening } = require('./utils/utils');
 
 mongoose
