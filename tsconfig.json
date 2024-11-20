@@ -21,6 +21,7 @@
       "@app/*": ["src/app/*"],
       "@core/*": ["src/core/*"],
       "@features/*": ["src/features/*"],
+      "@configs/*": ["src/configs/*"],
       "@constants/*": ["src/core/constants/*"],
       "@database/*": ["src/core/database/*"]
     }
