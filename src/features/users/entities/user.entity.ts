@@ -22,7 +22,7 @@ export class User {
   email: string;
 
   @ApiProperty({ description: 'Password of the user' })
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @ApiProperty({ description: 'Date when the user was created' })
@@ -30,6 +30,6 @@ export class User {
   createdDate: Date;
 
   @ApiProperty({ description: 'Date when the user was last updated' })
-  @UpdateDateColumn({ nullable: true })
+  @UpdateDateColumn()
   updatedDate: Date;
 }
