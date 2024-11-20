@@ -8,11 +8,13 @@ import {
   Post,
 } from '@nestjs/common';
 
+import { USERS } from '@core/constants/routes';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
-@Controller('users')
+@Controller(USERS.ROOT)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -21,9 +23,9 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
+  @Get(USERS.ID)
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
   @Post()
@@ -31,13 +33,13 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Patch(':id')
+  @Patch(USERS.ID)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    return this.usersService.update(id, updateUserDto);
   }
 
-  @Delete(':id')
+  @Delete(USERS.ID)
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 }

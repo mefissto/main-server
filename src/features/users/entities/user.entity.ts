@@ -1,13 +1,28 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
-export class UserEntity {
-  @PrimaryGeneratedColumn() // Auto-incremented primary key
-  id: number;
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column() // Specifies a regular column
-  name: string;
+  @Column()
+  username: string;
 
   @Column()
   email: string;
+
+  @Column()
+  password: string;
+
+  @CreateDateColumn()
+  createdDate: Date;
+
+  @UpdateDateColumn({ nullable: true })
+  updatedDate: Date;
 }

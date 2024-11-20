@@ -4,28 +4,35 @@ import { Repository } from 'typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserEntity } from './entities/user.entity';
+import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
 describe('UsersService', () => {
   let service: UsersService;
-  let userRepository: Repository<UserEntity>;
+  let userRepository: Repository<User>;
+  let mockUser: User;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
         {
-          provide: getRepositoryToken(UserEntity),
+          provide: getRepositoryToken(User),
           useClass: Repository,
         },
       ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
-    userRepository = module.get<Repository<UserEntity>>(
-      getRepositoryToken(UserEntity),
-    );
+    userRepository = module.get<Repository<User>>(getRepositoryToken(User));
+    mockUser = {
+      id: '1',
+      username: 'John Doe',
+      email: 'john.doe@example.com',
+      password: '123',
+      createdDate: new Date(),
+      updatedDate: new Date(),
+    };
   });
 
   it('should be defined', () => {
@@ -34,10 +41,11 @@ describe('UsersService', () => {
 
   it('should create a user', async () => {
     const userDto: CreateUserDto = {
-      name: 'John Doe',
+      username: 'John Doe',
       email: 'john.doe@example.com',
+      password: '2345',
     };
-    const result: UserEntity = { id: 1, ...userDto };
+    const result: User = { ...mockUser, ...userDto };
 
     jest.spyOn(service, 'create').mockImplementation(async () => result);
 
@@ -45,37 +53,31 @@ describe('UsersService', () => {
   });
 
   it('should find a user by id', async () => {
-    const result: UserEntity = {
-      id: 1,
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-    };
+    const result: User = mockUser;
 
     jest.spyOn(service, 'findOne').mockImplementation(async () => result);
 
-    expect(await service.findOne(1)).toEqual(result);
+    expect(await service.findOne('1')).toEqual(result);
   });
 
   it('should update a user', async () => {
     const userDto: UpdateUserDto = {
-      name: 'John Doe',
+      username: 'John Doe',
       email: 'john.doe@example.com',
     };
-    const result: UserEntity = {
-      id: 1,
-      name: 'John Doe',
-      email: 'john.doe@example.com',
+    const result: User = {
+      ...mockUser,
       ...userDto,
     };
 
     jest.spyOn(service, 'update').mockImplementation(async () => result);
 
-    expect(await service.update(1, userDto)).toEqual(result);
+    expect(await service.update('1', userDto)).toEqual(result);
   });
 
   it('should delete a user', async () => {
     jest.spyOn(service, 'remove').mockImplementation(async () => undefined);
 
-    expect(await service.remove(1)).toEqual(undefined);
+    expect(await service.remove('1')).toEqual(undefined);
   });
 });

@@ -2,14 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { UserEntity } from './entities/user.entity';
+import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
 describe('UsersController', () => {
   let controller: UsersController;
   let service: UsersService;
-  let userRepository: Repository<UserEntity>;
+  let userRepository: Repository<User>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -17,7 +17,7 @@ describe('UsersController', () => {
       providers: [
         UsersService,
         {
-          provide: getRepositoryToken(UserEntity),
+          provide: getRepositoryToken(User),
           useClass: Repository,
         },
       ],
@@ -25,8 +25,8 @@ describe('UsersController', () => {
 
     controller = module.get<UsersController>(UsersController);
     service = module.get<UsersService>(UsersService);
-    userRepository = module.get<Repository<UserEntity>>(
-      getRepositoryToken(UserEntity),
+    userRepository = module.get<Repository<User>>(
+      getRepositoryToken(User),
     );
   });
 
