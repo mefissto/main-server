@@ -6,13 +6,25 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
+/**
+ * Service for users
+ */
 @Injectable()
 export class UsersService {
+  /**
+   * Constructor
+   * @param userRepository
+   */
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
 
+  /**
+   * Create a new user
+   * @param createUserDto
+   * @returns
+   */
   async create(createUserDto: CreateUserDto): Promise<User> {
     let existingUser: User;
     try {
@@ -40,7 +52,13 @@ export class UsersService {
     }
   }
 
-  async findAll(): Promise<User[]> {
+  /**
+   * Get all users
+   * @param page
+   * @param limit
+   * @returns
+   */
+  async findAll(page: number, limit: number): Promise<User[]> {
     try {
       return await this.userRepository.find();
     } catch (error) {
@@ -49,10 +67,22 @@ export class UsersService {
     }
   }
 
+  /**
+   * Get a user by id
+   * @param id
+   * @returns
+   * @throws NotFoundException
+   */
   async findOne(id: string): Promise<User> {
     return await this.findOneByIdOrFail(id);
   }
 
+  /**
+   * Update a user
+   * @param id
+   * @param updateUserDto
+   * @returns
+   */
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     try {
       await this.userRepository.update({ id }, updateUserDto);
@@ -64,6 +94,10 @@ export class UsersService {
     return await this.findOneByIdOrFail(id);
   }
 
+  /**
+   * Remove a user
+   * @param id
+   */
   async remove(id: string): Promise<void> {
     await this.findOneByIdOrFail(id); // Check if user exists before deleting it
 
@@ -75,6 +109,12 @@ export class UsersService {
     }
   }
 
+  /**
+   * Get a user by id or throw a 404 error
+   * @param id
+   * @returns
+   * @throws NotFoundException
+   */
   private async findOneByIdOrFail(id: string): Promise<User> {
     let user: User;
 
