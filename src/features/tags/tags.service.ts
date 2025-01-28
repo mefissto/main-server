@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 /**
- * The posts service.
+ * Service for tags
  */
 @Injectable()
-export class PostsService {}
+export class TagsService {}

@@ -7,6 +7,9 @@ import { APP_GLOBAL_PREFIX, SWAGGER_DOCS_PATH } from '@constants/common';
 
 import { AppModule } from './app.module';
 
+/**
+ * The main application bootstrap function.
+ */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
