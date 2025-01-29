@@ -12,7 +12,7 @@ import {
   Matches,
   MaxLength,
   MinLength,
-  ValidateNested
+  ValidateNested,
 } from 'class-validator';
 
 import { CreateMetaOptionsDto } from '../../meta-options/dtos/create-meta-options.dto';
@@ -118,13 +118,12 @@ export class CreatePostDto {
 
   /** The meta options of the post. */
   @ApiPropertyOptional({
-    example: [{ key: 'author', value: 'John Doe' }],
+    example: { metaValue: '{"key": "value"}' },
     description: 'The meta options of the post',
-    type: [CreateMetaOptionsDto],
+    type: CreateMetaOptionsDto,
   })
   @IsOptional()
-  @IsArray()
   @Type(() => CreateMetaOptionsDto)
   @ValidateNested({ each: true })
-  metaOptions?: CreateMetaOptionsDto[];
+  metaOptions?: CreateMetaOptionsDto | null;
 }

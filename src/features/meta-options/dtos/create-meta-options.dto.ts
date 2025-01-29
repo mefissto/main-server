@@ -7,8 +7,8 @@ import { IsJSON, IsNotEmpty } from 'class-validator';
 export class CreateMetaOptionsDto {
   /** The value of the meta option. */
   @ApiProperty({
-    example: 'John Doe',
     description: 'The value of the meta option',
+    example: '{"key": "value"}',
   })
   @IsNotEmpty()
   @IsJSON()

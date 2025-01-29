@@ -83,6 +83,7 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: 'The record has been successfully created.',
+    type: User,
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiBody({

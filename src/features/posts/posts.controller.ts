@@ -28,7 +28,7 @@ export class PostsController {
   @ApiResponse({ status: 200, description: 'All posts' })
   @Get()
   public async getPosts() {
-    return 'Posts';
+    return this.postsService.getPosts();
   }
 
   /**
@@ -52,7 +52,7 @@ export class PostsController {
   @ApiResponse({ status: 201, description: 'Post created' })
   @Post()
   public async createPost(@Body() createPostDto: CreatePostDto) {
-    return 'Create Post';
+    return this.postsService.createPost(createPostDto);
   }
 
   /**
@@ -76,6 +76,6 @@ export class PostsController {
   @ApiResponse({ status: 200, description: 'Post deleted' })
   @Delete(':id')
   public async deletePost(@Param('id') id: string) {
-    return 'Delete Post';
+    return this.postsService.deletePost(id);
   }
 }

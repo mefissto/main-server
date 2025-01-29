@@ -1,6 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 
-import { CreateMetaOptionsDto } from '../../meta-options/dtos/create-meta-options.dto';
+import { MetaOption } from '@features/meta-options/entities/meta-option.entity';
 import { PostStatus } from '../enums/post-status.enum';
 import { PostType } from '../enums/post-type.enum';
 
@@ -42,6 +47,14 @@ export class Post {
   @Column({ type: 'simple-array', nullable: true })
   tags?: string[];
 
-  @Column({ type: 'simple-json', nullable: true })
-  metaOptions?: CreateMetaOptionsDto[];
+  // cascade: true means that when a post is saved, the metaOptions will also be saved
+  // eager: true means that when a post is fetched, the metaOptions will also be fetched
+  // nullable: true means that the metaOptions can be null
+  // This is a one-to-one bi-directional relationship
+  @OneToOne(() => MetaOption, (metaOptions) => metaOptions.post, {
+    cascade: true,
+    eager: true,
+    nullable: true,
+  })
+  metaOptions?: MetaOption;
 }
