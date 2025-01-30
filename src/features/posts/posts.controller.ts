@@ -64,7 +64,7 @@ export class PostsController {
   @ApiResponse({ status: 200, description: 'Post updated' })
   @Patch()
   public async updatePost(@Body() updatePostDto: UpdatePostDto) {
-    return 'Update Post';
+    return this.postsService.updatePost(updatePostDto);
   }
 
   /**

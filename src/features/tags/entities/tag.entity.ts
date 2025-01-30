@@ -1,10 +1,12 @@
+import { Post } from '@features/posts/entities/post.entity';
 import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 /**
@@ -48,12 +50,18 @@ export class Tag {
   })
   featuredImageUrl?: string;
 
+  // onDelete: 'CASCADE' means that when a tag is deleted, the reference to the tag in the joined table will also be deleted
+  // inverse side needs to be set up on both sides to make the relationship bidirectional
+  @ManyToMany(() => Post, (post) => post.tags, { onDelete: 'CASCADE' })
+  posts: Post[];
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
+  // Soft delete column
   @DeleteDateColumn()
   deletedAt: Date;
 }

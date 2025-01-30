@@ -1,8 +1,10 @@
+import { Post } from '@features/posts/entities/post.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -46,4 +48,7 @@ export class User {
   @ApiProperty({ description: 'Date when the user was last updated' })
   @UpdateDateColumn()
   updatedDate: Date;
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts: Post[];
 }

@@ -1,11 +1,17 @@
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
   OneToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { MetaOption } from '@features/meta-options/entities/meta-option.entity';
+import { Tag } from '@features/tags/entities/tag.entity';
+import { User } from '@features/users/entities/user.entity';
+
 import { PostStatus } from '../enums/post-status.enum';
 import { PostType } from '../enums/post-type.enum';
 
@@ -44,8 +50,11 @@ export class Post {
   })
   publishedOn?: Date;
 
-  @Column({ type: 'simple-array', nullable: true })
-  tags?: string[];
+  // eager: true means that when a post is fetched, the tags will also be fetched
+  // inverse side needs to be set up on both sides to make the relationship bidirectional
+  @ManyToMany(() => Tag, (tag) => tag.posts, { eager: true })
+  @JoinTable()
+  tags?: Tag[];
 
   // cascade: true means that when a post is saved, the metaOptions will also be saved
   // eager: true means that when a post is fetched, the metaOptions will also be fetched
@@ -57,4 +66,7 @@ export class Post {
     nullable: true,
   })
   metaOptions?: MetaOption;
+
+  @ManyToOne(() => User, (author) => author.posts)
+  author: User;
 }

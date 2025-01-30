@@ -115,7 +115,7 @@ export class UsersService {
    * @returns
    * @throws NotFoundException
    */
-  private async findOneByIdOrFail(id: string): Promise<User> {
+  async findOneByIdOrFail(id: string): Promise<User> {
     let user: User;
 
     try {
