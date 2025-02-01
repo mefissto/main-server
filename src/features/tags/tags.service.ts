@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { CreateTagDto } from './dtos/create-tag.dto';
@@ -22,17 +22,31 @@ export class TagsService {
    * Get all tags
    */
   async getTags() {
-    return await this.tagsRepository.find({
-        'withDeleted': true
-    });
+    try {
+      return await this.tagsRepository.find({
+        // withDeleted: true, // Uncomment this line to include soft deleted tags
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error occurred while fetching tags',
+        error.message,
+      );
+    }
   }
 
   /**
    * Create a tag
    */
   async createTag(createTagDto: CreateTagDto) {
-    const tag = this.tagsRepository.create(createTagDto);
-    return await this.tagsRepository.save(tag);
+    try {
+      const tag = this.tagsRepository.create(createTagDto);
+      return await this.tagsRepository.save(tag);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error occurred while creating tag',
+        error.message,
+      );
+    }
   }
 
   /**
@@ -40,7 +54,14 @@ export class TagsService {
    * @param id The tag id
    */
   async findMultipleByIds(ids: string[]) {
-    return await this.tagsRepository.findBy({ id: In(ids) });
+    try {
+      return await this.tagsRepository.findBy({ id: In(ids) });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error occurred while fetching tags',
+        error.message,
+      );
+    }
   }
 
   /**
@@ -48,7 +69,14 @@ export class TagsService {
    * @param id The tag id
    */
   async deleteTag(id: string) {
-    return await this.tagsRepository.delete(id);
+    try {
+      return await this.tagsRepository.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error occurred while deleting tag',
+        error.message,
+      );
+    }
   }
 
   /**
@@ -56,6 +84,13 @@ export class TagsService {
    * @param id The tag id
    */
   async softDeleteTag(id: string) {
-    return await this.tagsRepository.softDelete(id);
+    try {
+      return await this.tagsRepository.softDelete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error occurred while deleting tag',
+        error.message,
+      );
+    }
   }
 }

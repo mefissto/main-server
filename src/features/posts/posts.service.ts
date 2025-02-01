@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -42,20 +42,34 @@ export class PostsService {
 
     const post = this.postRepository.create({ ...createPostDto, author, tags });
 
-    return await this.postRepository.save(post);
+    try {
+      return await this.postRepository.save(post);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error occurred while creating post',
+        error.message,
+      );
+    }
   }
 
   /**
    * Get all posts.
    */
   async getPosts() {
-    return await this.postRepository.find({
-      relations: {
-        // metaOptions: true,
-        // author: true,
-        // tags: true,
-      },
-    });
+    try {
+      return await this.postRepository.find({
+        relations: {
+          // metaOptions: true, // Uncomment this line to include meta options
+          // author: true, // Uncomment this line to include author
+          // tags: true, // Uncomment this line to include tags
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error occurred while fetching posts',
+        error.message,
+      );
+    }
   }
 
   /**
@@ -78,21 +92,32 @@ export class PostsService {
     // Find the tags by ids
     const tags = await this.tagsService.findMultipleByIds(updatePostDto.tags);
     // Find the post by id
-    const post = await this.postRepository.findOneBy({ id: updatePostDto.id });
-    // Update the post
-    // If the updatePostDto value is null, use the post value
-    // update method is available in the repository but can be buggy for entity with multiple relations, need to test
-    return await this.postRepository.save({
-      title: updatePostDto.title ?? post.title,
-      content: updatePostDto.content ?? post.content,
-      schema: updatePostDto.schema ?? post.schema,
-      featuredImageUrl: updatePostDto.featuredImageUrl ?? post.featuredImageUrl,
-      publishedOn: updatePostDto.publishedOn ?? post.publishedOn,
-      postType: updatePostDto.postType ?? post.postType,
-      status: updatePostDto.status ?? post.status,
-      slug: updatePostDto.slug ?? post.slug,
-      tags,
-    });
+
+    try {
+      const post = await this.postRepository.findOneBy({
+        id: updatePostDto.id,
+      });
+      // Update the post
+      // If the updatePostDto value is null, use the post value
+      // update method is available in the repository but can be buggy for entity with multiple relations, need to test
+      return await this.postRepository.save({
+        title: updatePostDto.title ?? post.title,
+        content: updatePostDto.content ?? post.content,
+        schema: updatePostDto.schema ?? post.schema,
+        featuredImageUrl:
+          updatePostDto.featuredImageUrl ?? post.featuredImageUrl,
+        publishedOn: updatePostDto.publishedOn ?? post.publishedOn,
+        postType: updatePostDto.postType ?? post.postType,
+        status: updatePostDto.status ?? post.status,
+        slug: updatePostDto.slug ?? post.slug,
+        tags,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error occurred while updating post',
+        error.message,
+      );
+    }
   }
 
   /**
@@ -101,6 +126,13 @@ export class PostsService {
    */
 
   async deletePost(id: string) {
-    return await this.postRepository.delete(id);
+    try {
+      return await this.postRepository.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error occurred while deleting post',
+        error.message,
+      );
+    }
   }
 }

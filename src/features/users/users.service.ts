@@ -1,4 +1,12 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -34,29 +42,31 @@ export class UsersService {
    * @returns User
    */
   async create(createUserDto: CreateUserDto): Promise<User> {
-    let existingUser: User;
     try {
       // Check if user already exists
-      existingUser = await this.userRepository.findOneBy({
+      const existingUser = await this.userRepository.findOneBy({
         email: createUserDto.email,
       });
-    } catch (error) {
-      // If there is an error fetching the user, return a 500 error with the error message
-      throw new Error('Internal server error');
-    }
 
-    if (existingUser) {
       // If user already exists, return a 400 error with the error message
-      throw new Error('User already exists');
-    }
+      if (existingUser) {
+        throw new BadRequestException('User already exists');
+      }
 
-    try {
-      // Create user if it does not exist yet
       const user = this.userRepository.create(createUserDto);
+
       return await this.userRepository.save(user);
     } catch (error) {
+      // If the error is a BadRequestException, rethrow it
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
       // If there is an error creating the user, return a 500 error with the error message
-      throw new Error('Internal server error');
+      throw new InternalServerErrorException(
+        'Error during creating user',
+        error.message,
+      );
     }
   }
 
@@ -71,7 +81,15 @@ export class UsersService {
       return await this.userRepository.find();
     } catch (error) {
       // If there is an error fetching the users, return a 500 error with the error message
-      throw new Error('Internal server error');
+      // Custom exception handling
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Error during fetching users',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        { cause: error },
+      );
     }
   }
 
@@ -96,7 +114,10 @@ export class UsersService {
       await this.userRepository.update({ id }, updateUserDto);
     } catch (error) {
       // If there is an error updating the user, return a 500 error with the error message
-      throw new Error('Internal server error');
+      throw new InternalServerErrorException(
+        'Error updating user',
+        error.message,
+      );
     }
 
     return await this.findOneByIdOrFail(id);
@@ -113,7 +134,10 @@ export class UsersService {
       await this.userRepository.delete(id);
     } catch (error) {
       // If there is an error deleting the user, return a 500 error with the error message
-      throw new Error('Internal server error');
+      throw new InternalServerErrorException(
+        'Error deleting user',
+        error.message,
+      );
     }
   }
 
@@ -124,15 +148,11 @@ export class UsersService {
    * @throws NotFoundException
    */
   async findOneByIdOrFail(id: string): Promise<User> {
-    let user: User;
-
     try {
-      user = await this.userRepository.findOneByOrFail({ id });
+      return await this.userRepository.findOneByOrFail({ id });
     } catch (error) {
       // If user does not exist, return a 404 error with the error message
-      throw new NotFoundException('User not found');
+      throw new NotFoundException(`User with id ${id} not found`);
     }
-
-    return user;
   }
 }

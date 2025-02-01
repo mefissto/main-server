@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -29,9 +29,13 @@ export class MetaOptionsService {
     try {
       const metaOption =
         this.metaOptionsRepository.create(createMetaOptionsDto);
+
       return this.metaOptionsRepository.save(metaOption);
     } catch (error) {
-      throw new Error(`Failed to create meta option: ${error.message}`);
+      throw new InternalServerErrorException(
+        'Error occurred while creating meta option',
+        error.message,
+      );
     }
   }
 }
