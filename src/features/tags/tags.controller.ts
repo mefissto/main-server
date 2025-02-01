@@ -14,12 +14,13 @@ export class TagsController {
    */
   constructor(private readonly tagsService: TagsService) {}
 
-    /**
-     * Get all tags
-     */
-    @Get()
-    getTags() {
-      return this.tagsService.getTags();}
+  /**
+   * Get all tags
+   */
+  @Get()
+  getTags() {
+    return this.tagsService.getTags();
+  }
 
   /**
    * Create a tag

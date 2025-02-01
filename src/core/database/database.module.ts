@@ -1,14 +1,7 @@
+import { DatabaseConfig } from '@core/constants/env-variables';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
-import {
-    DATABASE_HOST,
-    DATABASE_NAME,
-    DATABASE_PASSWORD,
-    DATABASE_PORT,
-    DATABASE_USERNAME,
-} from '@constants/env-variables';
 
 @Module({
   imports: [
@@ -17,14 +10,28 @@ import {
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get(DATABASE_HOST),
-        port: configService.get(DATABASE_PORT),
-        username: configService.get(DATABASE_USERNAME),
-        password: configService.get(DATABASE_PASSWORD),
-        database: configService.get(DATABASE_NAME),
+        host: configService.get(
+          `${DatabaseConfig.NAME}.${DatabaseConfig.DATABASE_HOST}`,
+        ),
+        port: configService.get(
+          `${DatabaseConfig.NAME}.${DatabaseConfig.DATABASE_PORT}`,
+        ),
+        username: configService.get(
+          `${DatabaseConfig.NAME}.${DatabaseConfig.DATABASE_USERNAME}`,
+        ),
+        password: configService.get(
+          `${DatabaseConfig.NAME}.${DatabaseConfig.DATABASE_PASSWORD}`,
+        ),
+        database: configService.get(
+          `${DatabaseConfig.NAME}.${DatabaseConfig.DATABASE_NAME}`,
+        ),
+        synchronize: configService.get(
+          `${DatabaseConfig.NAME}.${DatabaseConfig.SYNCHRONIZE}`,
+        ), // Be cautious about using synchronize in production
+        autoLoadEntities: configService.get(
+          `${DatabaseConfig.NAME}.${DatabaseConfig.AUTOLOAD_ENTITIES}`,
+        ),
         entities: [__dirname + '/../**/*.entity.{js,ts}'],
-        synchronize: true, // Be cautious about using synchronize in production
-        autoLoadEntities: true,
       }),
       inject: [ConfigService],
     }),

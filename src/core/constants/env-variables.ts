@@ -1,14 +1,50 @@
-/** The environment variable for the application port. */
-export const DATABASE_HOST = 'DB_HOST';
+/**
+ * The application configuration namespace.
+ */
+export namespace AppConfig {
+  /** The name of the application configuration. */
+  export const NAME = 'appConfig';
 
-/** The environment variable for the database name. */
-export const DATABASE_NAME = 'DB_NAME';
+  /** The environment variable for the application environment. */
+  export const ENVIRONMENT = 'environment';
+}
 
-/** The environment variable for the database port. */
-export const DATABASE_PORT = 'DB_PORT';
+/**
+ * The database configuration namespace.
+ */
+export namespace DatabaseConfig {
+  /** The name of the database configuration. */
+  export const NAME = 'database';
 
-/** The environment variable for the database username. */
-export const DATABASE_USERNAME = 'DB_USERNAME';
+  /** The environment variable for the database auto-load entities. */
+  export const AUTOLOAD_ENTITIES = 'autoLoadEntities';
 
-/** The environment variable for the database password. */
-export const DATABASE_PASSWORD = 'DB_PASSWORD';
+  /** The environment variable for the database synchronize. */
+  export const SYNCHRONIZE = 'synchronize';
+
+  /** The environment variable for the database logging. */
+  export const LOGGING = 'logging';
+
+  /** The environment variable for the database host. */
+  export const DATABASE_HOST = 'host';
+
+  /** The environment variable for the database name. */
+  export const DATABASE_NAME = 'name';
+
+  /** The environment variable for the database port. */
+  export const DATABASE_PORT = 'port';
+
+  /** The environment variable for the database username. */
+  export const DATABASE_USERNAME = 'username';
+
+  /** The environment variable for the database password. */
+  export const DATABASE_PASSWORD = 'password';
+}
+
+export namespace ProfileConfig {
+  /** The name of the profile configuration. */
+  export const NAME = 'profileConfig';
+
+  /** The environment variable for the profile default language. */
+  export const PROFILE_API_KEY = 'apiKey';
+}

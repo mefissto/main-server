@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { ENV_DEV_FILE_PATH } from '@constants/common';
+import appConfig from '@configs/app.config';
+import databaseConfig from '@configs/database.config';
+import environmentValidation from '@configs/environment.validation';
 import { DatabaseModule } from '@database/database.module';
 
 import { MetaOptionsModule } from '@features/meta-options/meta-options.module';
@@ -11,9 +13,19 @@ import { UsersModule } from '@features/users/users.module';
 
 import { AppController } from './app.controller';
 
+// Load the environment file based on the NODE_ENV environment variable
+const envFilePath = process.env.NODE_ENV
+  ? `.env.${process.env.NODE_ENV.trim()}`
+  : '.env';
+
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: ENV_DEV_FILE_PATH }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath,
+      load: [appConfig, databaseConfig],
+      validationSchema: environmentValidation,
+    }),
     DatabaseModule,
     UsersModule,
     PostsModule,

@@ -1,6 +1,3 @@
-/** The path for the environment file. */
-export const ENV_DEV_FILE_PATH = '.env.development';
-
 /** The global prefix for the application. */
 export const APP_GLOBAL_PREFIX = 'api/';
 
