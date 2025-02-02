@@ -21,6 +21,7 @@ import {
 
 import { USERS } from '@core/constants/routes';
 
+import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './entities/user.entity';
@@ -92,6 +93,27 @@ export class UsersController {
   })
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+
+  /**
+   * Create many users
+   * @param createUserDto[]
+   * @returns
+   */
+  @Post('create-many')
+  @ApiOperation({ summary: 'Create many users' })
+  @ApiResponse({
+    status: 201,
+    description: 'The records has been successfully created.',
+    type: User,
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiBody({
+    type: [CreateUserDto],
+    description: 'Json structure for user object',
+  })
+  createMany(@Body() createManyUsersDto: CreateManyUsersDto) {
+    return this.usersService.createMany(createManyUsersDto);
   }
 
   /**
