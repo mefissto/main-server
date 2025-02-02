@@ -2,10 +2,13 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { Paginated } from '@core/pagination/interfaces/paginated.interface';
+import { PaginationProvider } from '@core/pagination/providers/pagination.provider';
+import { TagsService } from '@features/tags/tags.service';
 import { UsersService } from '@features/users/users.service';
 
-import { TagsService } from '@features/tags/tags.service';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { GetPostsDto } from './dtos/get-posts.dto';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { Post } from './entities/post.entity';
 
@@ -24,8 +27,10 @@ export class PostsService {
     private readonly postRepository: Repository<Post>,
     // Inject the users service
     private readonly userService: UsersService,
-
+    // Inject the tags service
     private readonly tagsService: TagsService,
+    // Inject the pagination provider
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   /**
@@ -55,15 +60,21 @@ export class PostsService {
   /**
    * Get all posts.
    */
-  async getPosts() {
+  async getPosts(
+    userId: string,
+    postQuery: GetPostsDto,
+  ): Promise<Paginated<Post>> {
     try {
-      return await this.postRepository.find({
-        relations: {
-          // metaOptions: true, // Uncomment this line to include meta options
-          // author: true, // Uncomment this line to include author
-          // tags: true, // Uncomment this line to include tags
-        },
-      });
+      return await this.paginationProvider.paginateQuery(
+        { page: postQuery.page, limit: postQuery.limit },
+        this.postRepository,
+      );
+
+      // relations: {
+      //   metaOptions: true, // Uncomment this line to include meta options
+      //   author: true, // Uncomment this line to include author
+      //   tags: true, // Uncomment this line to include tags
+      // },
     } catch (error) {
       throw new InternalServerErrorException(
         'Error occurred while fetching posts',

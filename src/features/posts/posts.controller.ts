@@ -6,10 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { GetPostsDto } from './dtos/get-posts.dto';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { PostsService } from './posts.service';
 
@@ -26,9 +28,12 @@ export class PostsController {
    */
   @ApiOperation({ summary: 'Get all posts' })
   @ApiResponse({ status: 200, description: 'All posts' })
-  @Get()
-  public async getPosts() {
-    return this.postsService.getPosts();
+  @Get('/:userId')
+  public async getPosts(
+    @Param('userId') userId: string,
+    @Query() query: GetPostsDto,
+  ) {
+    return this.postsService.getPosts(userId, query);
   }
 
   /**
