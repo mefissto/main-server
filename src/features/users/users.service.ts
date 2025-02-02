@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   HttpException,
   HttpStatus,
   Inject,
@@ -11,11 +10,13 @@ import { ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { include } from '@core/database/utils/utils';
 import profileConfig from './config/profile.config';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './entities/user.entity';
+import { CreateUserProvider } from './providers/create-user.provider';
 import { UsersCreateManyProvider } from './providers/users-create-many.provider';
 
 /**
@@ -37,6 +38,8 @@ export class UsersService {
 
     // Inject the users create many provider - for learning purposes
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
+    // Inject the create user provider
+    private readonly createUserProvider: CreateUserProvider,
   ) {
     console.log(this.profileConfiguration);
   }
@@ -47,32 +50,7 @@ export class UsersService {
    * @returns User
    */
   async create(createUserDto: CreateUserDto): Promise<User> {
-    try {
-      // Check if user already exists
-      const existingUser = await this.userRepository.findOneBy({
-        email: createUserDto.email,
-      });
-
-      // If user already exists, return a 400 error with the error message
-      if (existingUser) {
-        throw new BadRequestException('User already exists');
-      }
-
-      const user = this.userRepository.create(createUserDto);
-
-      return await this.userRepository.save(user);
-    } catch (error) {
-      // If the error is a BadRequestException, rethrow it
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
-
-      // If there is an error creating the user, return a 500 error with the error message
-      throw new InternalServerErrorException(
-        'Error during creating user',
-        error.message,
-      );
-    }
+    return this.createUserProvider.createUser(createUserDto);
   }
 
   // For transaction learning purposes
@@ -111,6 +89,24 @@ export class UsersService {
    */
   async findOne(id: string): Promise<User> {
     return await this.findOneByIdOrFail(id);
+  }
+
+  /**
+   * Get a user by email
+   * @param email
+   * @returns
+   * @throws NotFoundException
+   */
+  async findOneByEmail(email: string): Promise<User> {
+    try {
+      return await this.userRepository.findOneOrFail({
+        where: { email },
+        select: include(this.userRepository, ['password']),
+      });
+    } catch (error) {
+      // If user does not exist, return a 404 error with the error message
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
   }
 
   /**

@@ -1,3 +1,4 @@
+
 /**
  * The application configuration namespace.
  */
@@ -47,4 +48,21 @@ export namespace ProfileConfig {
 
   /** The environment variable for the profile default language. */
   export const PROFILE_API_KEY = 'apiKey';
+}
+
+export namespace JWTConfig {
+  /** The name of the JWT configuration. */
+  export const NAME = 'jwt';
+
+  /** The environment variable for the JWT secret. */
+  export const JWT_SECRET = 'secret';
+
+  /** The environment variable for the JWT audience. */
+  export const JWT_AUDIENCE = 'audience';
+
+  /** The environment variable for the JWT issuer. */
+  export const JWT_ISSUER = 'issuer';
+
+  /** The environment variable for the JWT access token TTL. */
+  export const JWT_ACCESS_TOKEN_TTL = 'accessTokenTtl';
 }
