@@ -31,6 +31,8 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors();
+
   app.setGlobalPrefix(APP_GLOBAL_PREFIX);
 
   const documentFactory = () =>

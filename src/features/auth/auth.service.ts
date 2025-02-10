@@ -43,20 +43,22 @@ export class AuthService {
    */
   async signIn(signInDto: SignInDto) {
     const user = await this.userService.findOneByEmail(signInDto.email);
+    let isPasswordValid: boolean;
+
     try {
-      const isPasswordValid = await this.hashingProvider.comparePassword(
+      isPasswordValid = await this.hashingProvider.comparePassword(
         signInDto.password,
         user.password,
       );
-
-      if (!isPasswordValid) {
-        throw new UnauthorizedException('Invalid password');
-      }
     } catch (error) {
       throw new InternalServerErrorException(
         'Error during sign in',
         error.message,
       );
+    }
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid password');
     }
 
     const accessToken = await this.jwtService.signAsync(
