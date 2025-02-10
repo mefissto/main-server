@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 
 import { SWAGGER_CONFIG } from '@configs/swagger';
-import { APP_GLOBAL_PREFIX, SWAGGER_DOCS_PATH } from '@constants/common';
+import { APP_GLOBAL_PREFIX, SWAGGER_DOCS_PATH } from '@constants/common.constants';
 
 import { AppModule } from './app.module';
 

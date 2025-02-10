@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-import { PASSWORD_REGEX } from '@core/constants/common';
+import { PASSWORD_REGEX } from '@constants/common.constants';
 
 /**
  * The data transfer object (DTO) that represents the user creation data.

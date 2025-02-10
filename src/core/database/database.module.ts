@@ -1,7 +1,8 @@
-import { DatabaseConfig } from '@core/constants/env-variables';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { DatabaseConfig } from '@constants/env-variables.constants';
 
 @Module({
   imports: [

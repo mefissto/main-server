@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
-import { DatabaseConfig } from '@core/constants/env-variables';
+import { DatabaseConfig } from '@constants/env-variables.constants';
 
 export default registerAs(DatabaseConfig.NAME, () => ({
   [DatabaseConfig.DATABASE_HOST]: process.env.DATABASE_HOST || 'localhost',

@@ -23,6 +23,8 @@
       "@features/*": ["src/features/*"],
       "@configs/*": ["src/configs/*"],
       "@constants/*": ["src/core/constants/*"],
+      "@enums/*": ["src/core/enums/*"],
+      "@decorators/*": ["src/core/decorators/*"],
       "@database/*": ["src/core/database/*"]
     }
   }

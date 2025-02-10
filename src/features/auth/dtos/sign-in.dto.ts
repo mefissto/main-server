@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-    IsEmail,
-    IsNotEmpty,
-    IsString,
-    Matches,
-    MaxLength,
-    MinLength,
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
 } from 'class-validator';
 
-import { PASSWORD_REGEX } from '@core/constants/common';
+import { PASSWORD_REGEX } from '@constants/common.constants';
 
 export class SignInDto {
   /** The email of the user. */

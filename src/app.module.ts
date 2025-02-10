@@ -16,6 +16,8 @@ import { TagsModule } from '@features/tags/tags.module';
 import { UsersModule } from '@features/users/users.module';
 
 import { AccessTokenGuard } from '@core/guards/access-token.guard';
+import { AuthenticationGuard } from '@core/guards/authentication.guard';
+
 import { AppController } from './app.controller';
 
 // Load the environment file based on the NODE_ENV environment variable
@@ -31,7 +33,7 @@ const envFilePath = process.env.NODE_ENV
       load: [appConfig, databaseConfig, jwtConfig],
       validationSchema: environmentValidation,
     }),
-    JwtModule.registerAsync(jwtConfig.asProvider()),
+    JwtModule,
     DatabaseModule,
     UsersModule,
     PostsModule,
@@ -43,8 +45,9 @@ const envFilePath = process.env.NODE_ENV
   providers: [
     {
       provide: APP_GUARD,
-      useClass: AccessTokenGuard,
+      useClass: AuthenticationGuard,
     },
+    AccessTokenGuard,
   ],
 })
 export class AppModule {}

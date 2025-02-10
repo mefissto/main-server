@@ -11,7 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 import jwtConfig from '@configs/jwt.config';
-import { REQUEST_USER_KEY } from '@core/constants/auth';
+import { REQUEST_USER_KEY } from '@constants/auth.constants';
 
 /**
  * The access token guard.
