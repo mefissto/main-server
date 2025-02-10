@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import jwtConfig from '@configs/jwt.config';
 import { UsersService } from '@features/users/users.service';
+import { ActiveUserData } from '@interfaces/active-user-data.interface';
 
 import { SignInDto } from './dtos/sign-in.dto';
 import { HashingProvider } from './providers/hashing.provider';
@@ -64,7 +65,7 @@ export class AuthService {
       {
         sub: user.id,
         email: user.email,
-      },
+      } satisfies ActiveUserData,
       {
         secret: this.jwtConfiguration.secret,
         expiresIn: this.jwtConfiguration.accessTokenTtl,

@@ -8,8 +8,11 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+
+import { ActiveUser } from '@decorators/active-user.decorator';
+import { ActiveUserData } from '@interfaces/active-user-data.interface';
+
 import { CreatePostDto } from './dtos/create-post.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
 import { UpdatePostDto } from './dtos/update-post.dto';
@@ -32,6 +35,7 @@ export class PostsController {
   public async getPosts(
     @Param('userId') userId: string,
     @Query() query: GetPostsDto,
+    @ActiveUser() user: ActiveUserData,
   ) {
     return this.postsService.getPosts(userId, query);
   }
