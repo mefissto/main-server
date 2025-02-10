@@ -40,9 +40,7 @@ export class UsersService {
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
     // Inject the create user provider
     private readonly createUserProvider: CreateUserProvider,
-  ) {
-    console.log(this.profileConfiguration);
-  }
+  ) {}
 
   /**
    * Create a new user

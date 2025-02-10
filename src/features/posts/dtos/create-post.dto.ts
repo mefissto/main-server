@@ -69,15 +69,6 @@ export class CreatePostDto {
   @IsNotEmpty()
   status: PostStatus;
 
-  /** The author of the post. */
-  @ApiProperty({
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    description: 'The author of the post',
-  })
-  @IsString()
-  @IsNotEmpty()
-  authorId: string;
-
   /** The content of the post. */
   @ApiPropertyOptional({
     example: 'This is my first post. Welcome to my blog!',

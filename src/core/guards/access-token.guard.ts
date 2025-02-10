@@ -27,7 +27,6 @@ export class AccessTokenGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    console.log(this.jwtConfiguration);
     const request: Request = context.switchToHttp().getRequest();
     const token = this.extractToken(request);
 
@@ -41,7 +40,6 @@ export class AccessTokenGuard implements CanActivate {
 
       // Attach the user to the request
       request[REQUEST_USER_KEY] = payload;
-      console.log(payload);
     } catch (error) {
       throw new InternalServerErrorException('Error during token verification');
     }

@@ -35,7 +35,6 @@ export class PostsController {
   public async getPosts(
     @Param('userId') userId: string,
     @Query() query: GetPostsDto,
-    @ActiveUser() user: ActiveUserData,
   ) {
     return this.postsService.getPosts(userId, query);
   }
@@ -60,8 +59,11 @@ export class PostsController {
   @ApiOperation({ summary: 'Create a new post' })
   @ApiResponse({ status: 201, description: 'Post created' })
   @Post()
-  public async createPost(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.createPost(createPostDto);
+  public async createPost(
+    @Body() createPostDto: CreatePostDto,
+    @ActiveUser() user: ActiveUserData,
+  ) {
+    return this.postsService.createPost(createPostDto, user);
   }
 
   /**

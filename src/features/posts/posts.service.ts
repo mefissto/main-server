@@ -6,6 +6,7 @@ import { Paginated } from '@core/pagination/interfaces/paginated.interface';
 import { PaginationProvider } from '@core/pagination/providers/pagination.provider';
 import { TagsService } from '@features/tags/tags.service';
 import { UsersService } from '@features/users/users.service';
+import { ActiveUserData } from '@interfaces/active-user-data.interface';
 
 import { CreatePostDto } from './dtos/create-post.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
@@ -37,13 +38,18 @@ export class PostsService {
    * Create a post.
    * @param post The post data.
    */
-  async createPost(createPostDto: CreatePostDto): Promise<Post> {
+  async createPost(
+    createPostDto: CreatePostDto,
+    user: ActiveUserData,
+  ): Promise<Post> {
     // Find the author by id
-    const author = await this.userService.findOneByIdOrFail(
-      createPostDto.authorId,
-    );
+    const author = await this.userService.findOneByIdOrFail(user.sub);
     // Find the tags by ids
     const tags = await this.tagsService.findMultipleByIds(createPostDto.tags);
+
+    if (tags.length !== createPostDto.tags.length) {
+      throw new InternalServerErrorException('Some tags do not exist');
+    }
 
     const post = this.postRepository.create({ ...createPostDto, author, tags });
 

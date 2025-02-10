@@ -43,7 +43,6 @@ export class AuthService {
    */
   async signIn(signInDto: SignInDto) {
     const user = await this.userService.findOneByEmail(signInDto.email);
-    console.log(user);
     try {
       const isPasswordValid = await this.hashingProvider.comparePassword(
         signInDto.password,
@@ -54,7 +53,6 @@ export class AuthService {
         throw new UnauthorizedException('Invalid password');
       }
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException(
         'Error during sign in',
         error.message,
@@ -73,8 +71,6 @@ export class AuthService {
         issuer: this.jwtConfiguration.issuer,
       },
     );
-
-    console.log(accessToken);
 
     return { accessToken };
   }
