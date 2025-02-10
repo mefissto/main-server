@@ -1,15 +1,15 @@
 import {
-    Inject,
-    Injectable,
-    InternalServerErrorException,
-    UnauthorizedException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
+import jwtConfig from '@configs/jwt.config';
 import { UsersService } from '@features/users/users.service';
 
-import { ConfigType } from '@nestjs/config';
-import jwtConfig from './config/jwt.config';
 import { SignInDto } from './dtos/sign-in.dto';
 import { HashingProvider } from './providers/hashing.provider';
 
