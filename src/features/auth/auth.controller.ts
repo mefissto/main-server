@@ -6,6 +6,7 @@ import { AuthType } from '@enums/auth-type.enum';
 
 import { AuthService } from './auth.service';
 import { SignInDto } from './dtos/sign-in.dto';
+import { SignUpDto } from './dtos/sign-up.dto';
 
 /**
  * The authentication controller.
@@ -36,7 +37,7 @@ export class AuthController {
 
   @Post('sign-up')
   @Auth(AuthType.NONE)
-  async signUp() {
-    return this.authService.signUp();
+  async signUp(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUp(signUpDto);
   }
 }

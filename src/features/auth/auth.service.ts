@@ -12,6 +12,7 @@ import { UsersService } from '@features/users/users.service';
 import { ActiveUserData } from '@interfaces/active-user-data.interface';
 
 import { SignInDto } from './dtos/sign-in.dto';
+import { SignUpDto } from './dtos/sign-up.dto';
 import { HashingProvider } from './providers/hashing.provider';
 
 /**
@@ -80,7 +81,20 @@ export class AuthService {
   /**
    * Sign up a user.
    */
-  async signUp() {
-    // Register logic
+  async signUp(signUpDto: SignUpDto) {
+    // Hash the password before creating the user
+
+    try {
+      signUpDto.password = await this.hashingProvider.hashPassword(
+        signUpDto.password,
+      );
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error during sign up',
+        error.message,
+      );
+    }
+
+    return this.userService.create(signUpDto);
   }
 }

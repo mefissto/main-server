@@ -2,8 +2,12 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 
+import { CORS_CONFIG } from '@configs/cors.config';
 import { SWAGGER_CONFIG } from '@configs/swagger';
-import { APP_GLOBAL_PREFIX, SWAGGER_DOCS_PATH } from '@constants/common.constants';
+import {
+  APP_GLOBAL_PREFIX,
+  SWAGGER_DOCS_PATH,
+} from '@constants/common.constants';
 
 import { AppModule } from './app.module';
 
@@ -28,10 +32,11 @@ async function bootstrap() {
       transformOptions: {
         enableImplicitConversion: true, // convert query params to the correct type
       },
+      // TODO: add custom validation error messages (exceptionFactory)
     }),
   );
 
-  app.enableCors();
+  app.enableCors(CORS_CONFIG);
 
   app.setGlobalPrefix(APP_GLOBAL_PREFIX);
 
