@@ -1,5 +1,8 @@
 import * as Joi from 'joi';
 
+/**
+ * Joi schema for validating the environment variables
+ */
 export default Joi.object({
   NODE_ENV: Joi.string()
     .trim() // Remove whitespace from the string as the value sometimes comes with whitespace
@@ -16,5 +19,6 @@ export default Joi.object({
   JWT_SECRET: Joi.string().required(),
   JWT_TOKEN_AUDIENCE: Joi.string().required(),
   JWT_TOKEN_ISSUER: Joi.string().required(),
-  JWT_ACCESS_TOKEN_TTL: Joi.number().default(3600),
+  JWT_ACCESS_TOKEN_TTL: Joi.number().required(),
+  JWT_REFRESH_TOKEN_TTL: Joi.number().required(),
 });

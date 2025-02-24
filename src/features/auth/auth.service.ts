@@ -1,19 +1,19 @@
 import {
-  Inject,
   Injectable,
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 
-import jwtConfig from '@configs/jwt.config';
 import { UsersService } from '@features/users/users.service';
-import { ActiveUserData } from '@interfaces/active-user-data.interface';
 
+import { User } from '@features/users/entities/user.entity';
+import { RefreshTokenDto } from './dtos/refresh-token.dto';
 import { SignInDto } from './dtos/sign-in.dto';
 import { SignUpDto } from './dtos/sign-up.dto';
+import { TokensDto } from './dtos/tokens.dto';
+import { GenerateTokensProvider } from './providers/generate-tokens.provider';
 import { HashingProvider } from './providers/hashing.provider';
+import { RefreshTokensProvider } from './providers/refresh-tokens.provider';
 
 /**
  * The authentication service.
@@ -32,17 +32,18 @@ export class AuthService {
     private readonly userService: UsersService,
     // Inject the hashing provider
     private readonly hashingProvider: HashingProvider,
-    // Inject the JWT service
-    private readonly jwtService: JwtService,
-    // Inject the JWT configuration
-    @Inject(jwtConfig.KEY)
-    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+    // Inject the RefreshTokensProvider
+    private readonly refreshTokensProvider: RefreshTokensProvider,
+    // Inject the GenerateTokensProvider
+    private readonly generateTokensProvider: GenerateTokensProvider,
   ) {}
 
   /**
    * Sign in a user.
+   * @param {SignInDto} signInDto The sign in DTO.
+   * @returns {Promise<TokensDto>} The tokens.
    */
-  async signIn(signInDto: SignInDto) {
+  async signIn(signInDto: SignInDto): Promise<TokensDto> {
     const user = await this.userService.findOneByEmail(signInDto.email);
     let isPasswordValid: boolean;
 
@@ -62,26 +63,15 @@ export class AuthService {
       throw new UnauthorizedException('Invalid password');
     }
 
-    const accessToken = await this.jwtService.signAsync(
-      {
-        sub: user.id,
-        email: user.email,
-      } satisfies ActiveUserData,
-      {
-        secret: this.jwtConfiguration.secret,
-        expiresIn: this.jwtConfiguration.accessTokenTtl,
-        audience: this.jwtConfiguration.audience,
-        issuer: this.jwtConfiguration.issuer,
-      },
-    );
-
-    return { accessToken };
+    return this.generateTokensProvider.generateTokens(user);
   }
 
   /**
    * Sign up a user.
+   * @param {SignUpDto} signUpDto The sign up DTO.
+   * @returns {Promise<User>} The user.
    */
-  async signUp(signUpDto: SignUpDto) {
+  async signUp(signUpDto: SignUpDto): Promise<User> {
     // Hash the password before creating the user
 
     try {
@@ -96,5 +86,14 @@ export class AuthService {
     }
 
     return this.userService.create(signUpDto);
+  }
+
+  /**
+   * Refresh the tokens.
+   * @param {RefreshTokenDto} refreshTokenDto The refresh token DTO.
+   * @returns {Promise<TokensDto>} The tokens.
+   */
+  async refreshTokens(refreshTokenDto: RefreshTokenDto): Promise<TokensDto> {
+    return this.refreshTokensProvider.refreshTokens(refreshTokenDto);
   }
 }

@@ -1,4 +1,3 @@
-
 /**
  * The application configuration namespace.
  */
@@ -65,4 +64,7 @@ export namespace JWTConfig {
 
   /** The environment variable for the JWT access token TTL. */
   export const JWT_ACCESS_TOKEN_TTL = 'accessTokenTtl';
+
+  /** The environment variable for the JWT refresh token TTL. */
+  export const JWT_REFRESH_TOKEN_TTL = 'refreshTokenTtl';
 }
