@@ -18,6 +18,11 @@ import { REQUEST_USER_KEY } from '@constants/auth.constants';
  */
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
+  /**
+   * The access token guard constructor.
+   * @param {JwtService} jwtService The JWT service.
+   * @param {ConfigType<typeof jwtConfig>} jwtConfiguration The JWT configuration.
+   */
   constructor(
     // Inject the JWT service
     private readonly jwtService: JwtService,
@@ -26,6 +31,11 @@ export class AccessTokenGuard implements CanActivate {
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
   ) {}
 
+  /**
+   * The canActivate method.
+   * @param {ExecutionContext} context The execution context.
+   * @returns {Promise<boolean>} The boolean value.
+   */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest();
     const token = this.extractToken(request);
@@ -47,6 +57,11 @@ export class AccessTokenGuard implements CanActivate {
     return true;
   }
 
+  /**
+   * Extract the token from the request.
+   * @param {Request} request The request.
+   * @returns {string} The token.
+   */
   private extractToken(request: Request): string {
     const [bearer, token] = request.headers.authorization?.split(' ') ?? [];
 

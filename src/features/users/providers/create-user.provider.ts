@@ -9,8 +9,15 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { User } from '../entities/user.entity';
 
+/**
+ * The create user provider.
+ */
 @Injectable()
 export class CreateUserProvider {
+  /**
+   * The constructor.
+   * @param userRepository The user repository.
+   */
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -18,8 +25,8 @@ export class CreateUserProvider {
 
   /**
    * Create a user.
-   * @param data
-   * @returns
+   * @param {CreateUserDto} createUserDto The create user DTO.
+   * @returns {Promise<User>} The user.
    */
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     try {

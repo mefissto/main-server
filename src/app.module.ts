@@ -20,7 +20,9 @@ import { AuthenticationGuard } from '@core/guards/authentication.guard';
 
 import { AppController } from './app.controller';
 
-// Load the environment file based on the NODE_ENV environment variable
+/**
+ * Load the environment file based on the NODE_ENV environment variable
+ */
 const envFilePath = process.env.NODE_ENV
   ? `.env.${process.env.NODE_ENV.trim()}`
   : '.env';

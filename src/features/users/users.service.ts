@@ -44,23 +44,27 @@ export class UsersService {
 
   /**
    * Create a new user
-   * @param createUserDto
-   * @returns User
+   * @param  {CreateUserDto} createUserDto
+   * @returns {Promise<User>}
    */
   async create(createUserDto: CreateUserDto): Promise<User> {
     return this.createUserProvider.createUser(createUserDto);
   }
 
-  // For transaction learning purposes
+  /**
+   * Create many users
+   * @param {CreateManyUsersDto} createManyUsersDto
+   * @returns {Promise<User[]>}
+   */
   async createMany(createManyUsersDto: CreateManyUsersDto): Promise<User[]> {
     return this.usersCreateManyProvider.createMany(createManyUsersDto);
   }
 
   /**
    * Get all users
-   * @param page
-   * @param limit
-   * @returns
+   * @param {number} page
+   * @param {number} limit
+   * @returns {Promise<User[]>}
    */
   async findAll(page: number, limit: number): Promise<User[]> {
     try {
@@ -81,8 +85,8 @@ export class UsersService {
 
   /**
    * Get a user by id
-   * @param id
-   * @returns
+   * @param {string} id
+   * @returns {Promise<User>}
    * @throws NotFoundException
    */
   async findOne(id: string): Promise<User> {
@@ -91,8 +95,8 @@ export class UsersService {
 
   /**
    * Get a user by email
-   * @param email
-   * @returns
+   * @param {string} email
+   * @returns {Promise<User>}
    * @throws NotFoundException
    */
   async findOneByEmail(email: string): Promise<User> {
@@ -109,9 +113,11 @@ export class UsersService {
 
   /**
    * Update a user
-   * @param id
-   * @param updateUserDto
-   * @returns
+   * @param {string} id
+   * @param {UpdateUserDto} updateUserDto
+   * @returns {Promise<User>}
+   * @throws NotFoundException
+   * @throws InternalServerErrorException
    */
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     try {
@@ -129,7 +135,8 @@ export class UsersService {
 
   /**
    * Remove a user
-   * @param id
+   * @param {string} id
+   * @returns {Promise<void>}
    */
   async remove(id: string): Promise<void> {
     await this.findOneByIdOrFail(id); // Check if user exists before deleting it
@@ -146,9 +153,9 @@ export class UsersService {
   }
 
   /**
-   * Get a user by id or throw a 404 error
-   * @param id
-   * @returns
+   * Find a user by id or throw a NotFoundException
+   * @param {string} id
+   * @returns {Promise<User>}
    * @throws NotFoundException
    */
   async findOneByIdOrFail(id: string): Promise<User> {

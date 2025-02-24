@@ -18,6 +18,13 @@ import { GenerateTokensProvider } from './generate-tokens.provider';
  */
 @Injectable()
 export class RefreshTokensProvider {
+  /**
+   * The refresh tokens provider constructor.
+   * @param {UsersService} userService The users service.
+   * @param {JwtService} jwtService The JWT service.
+   * @param {GenerateTokensProvider} generateTokensProvider The generate tokens provider.
+   * @param {ConfigType<typeof jwtConfig>} jwtConfiguration The JWT configuration.
+   */
   constructor(
     // Inject the users service
     private readonly userService: UsersService,

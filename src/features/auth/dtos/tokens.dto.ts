@@ -4,7 +4,9 @@ import { ApiProperty } from '@nestjs/swagger';
  * The tokens DTO.
  */
 export class TokensDto {
-  // The access token
+  /**
+   * The access token.
+   */
   @ApiProperty({
     description: 'The access token',
     example:
@@ -12,7 +14,9 @@ export class TokensDto {
   })
   accessToken: string;
 
-  // The refresh token
+  /**
+   * The refresh token.
+   */
   @ApiProperty({
     description: 'The refresh token',
     example:

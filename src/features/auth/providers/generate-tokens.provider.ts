@@ -16,6 +16,11 @@ import { TokensDto } from '../dtos/tokens.dto';
  */
 @Injectable()
 export class GenerateTokensProvider {
+  /**
+   * The generate tokens provider constructor.
+   * @param {JwtService} jwtService The JWT service.
+   * @param {ConfigType<typeof jwtConfig>} jwtConfiguration The JWT configuration.
+   */
   constructor(
     // Inject the JWT service
     private readonly jwtService: JwtService,

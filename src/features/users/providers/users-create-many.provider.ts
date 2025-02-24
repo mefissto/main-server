@@ -1,7 +1,7 @@
 import {
-    ConflictException,
-    Injectable,
-    InternalServerErrorException,
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 
@@ -22,7 +22,12 @@ export class UsersCreateManyProvider {
     private readonly dataSource: DataSource,
   ) {}
 
-  // For transaction learning purposes
+  /**
+   * Create many users.
+   * Added for transactional learning purposes.
+   * @param {CreateManyUsersDto} createManyUsersDto The create many users DTO.
+   * @returns {Promise<User[]>} The users.
+   */
   async createMany(createManyUsersDto: CreateManyUsersDto): Promise<User[]> {
     // Create query runner instance
     const queryRunner = this.dataSource.createQueryRunner();

@@ -1,8 +1,8 @@
 import {
-    CanActivate,
-    ExecutionContext,
-    Injectable,
-    UnauthorizedException,
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
@@ -15,8 +15,14 @@ import { AccessTokenGuard } from './access-token.guard';
  */
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
+  /**
+   * The default authentication type.
+   */
   private static readonly defaultAuthType: AuthType = AuthType.BEARER;
 
+  /**
+   * The authentication type guard map.
+   */
   private readonly authTypeGuardMap: Record<AuthType, CanActivate> = {
     [AuthType.BEARER]: this.accessTokenGuard,
     [AuthType.NONE]: { canActivate: () => true },
@@ -34,6 +40,11 @@ export class AuthenticationGuard implements CanActivate {
     private readonly accessTokenGuard: AccessTokenGuard,
   ) {}
 
+  /**
+   * The canActivate method.
+   * @param {ExecutionContext} context The execution context.
+   * @returns {Promise<boolean>} The boolean value.
+   */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const authTypes = this.reflector.getAllAndOverride<AuthType[]>(
       AUTH_TYPE_KEY,

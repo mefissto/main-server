@@ -10,6 +10,9 @@ import {
 
 import { PASSWORD_REGEX } from '@constants/common.constants';
 
+/**
+ * The sign-in DTO.
+ */
 export class SignInDto {
   /** The email of the user. */
   @ApiProperty({

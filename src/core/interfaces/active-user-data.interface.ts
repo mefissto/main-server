@@ -1,7 +1,14 @@
+/**
+ * The interface for the active user data
+ */
 export interface ActiveUserData {
-  // The user's id
+  /**
+   * The user ID.
+   */
   sub: string;
 
-  // The user's email
+  /**
+   * The user email.
+   */
   email: string;
 }

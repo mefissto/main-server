@@ -6,8 +6,15 @@ import { ObjectLiteral, Repository } from 'typeorm';
 import { PaginationQueryDto } from '../dtos/pagination-query.dto';
 import { Paginated } from '../interfaces/paginated.interface';
 
+/**
+ * The pagination provider.
+ */
 @Injectable()
 export class PaginationProvider {
+  /**
+   * The pagination provider constructor.
+   * @param request The request.
+   */
   constructor(
     @Inject(REQUEST)
     private readonly request: Request,
@@ -15,8 +22,9 @@ export class PaginationProvider {
 
   /**
    * Paginate the query.
-   * @param paginationQuery The pagination query.
-   * @param repository The entity repository.
+   * @param {PaginationQueryDto} paginationQuery The pagination query.
+   * @param {Repository<T>} repository The entity repository.
+   * @returns {Promise<Paginated<T>>} The paginated results.
    */
   async paginateQuery<T extends ObjectLiteral>(
     paginationQuery: PaginationQueryDto,
