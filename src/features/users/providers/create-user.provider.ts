@@ -1,13 +1,11 @@
-import { HashingProvider } from '@features/auth/providers/hashing.provider';
 import {
-    BadRequestException,
-    forwardRef,
-    Inject,
-    Injectable,
-    InternalServerErrorException,
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { User } from '../entities/user.entity';
 
@@ -16,9 +14,6 @@ export class CreateUserProvider {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-
-    @Inject(forwardRef(() => HashingProvider))
-    private readonly hashingProvider: HashingProvider,
   ) {}
 
   /**
@@ -38,12 +33,7 @@ export class CreateUserProvider {
         throw new BadRequestException('User already exists');
       }
 
-      const user = this.userRepository.create({
-        ...createUserDto,
-        password: await this.hashingProvider.hashPassword(
-          createUserDto.password,
-        ),
-      });
+      const user = this.userRepository.create(createUserDto);
 
       return await this.userRepository.save(user);
     } catch (error) {
