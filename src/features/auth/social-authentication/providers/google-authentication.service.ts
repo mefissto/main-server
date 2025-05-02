@@ -49,8 +49,6 @@ export class GoogleAuthenticationService implements OnModuleInit {
       } = loginTicket.getPayload();
       const user = await this.userService.findOneByGoogleId(googleId);
 
-      console.log('Google user:', user);
-
       if (user) {
         // User exists, generate tokens
         return this.generateTokensProvider.generateTokens(user);
