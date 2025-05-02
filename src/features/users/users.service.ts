@@ -11,12 +11,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { include } from '@core/database/utils/utils';
+
 import profileConfig from './config/profile.config';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './entities/user.entity';
+import { GoogleUser } from './interfaces/google-user.interface';
+import { CreateGoogleUserProvider } from './providers/create-google-user.provider';
 import { CreateUserProvider } from './providers/create-user.provider';
+import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider';
 import { UsersCreateManyProvider } from './providers/users-create-many.provider';
 
 /**
@@ -40,6 +44,10 @@ export class UsersService {
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
     // Inject the create user provider
     private readonly createUserProvider: CreateUserProvider,
+    // Inject the find one by google id provider
+    private readonly findOneByGoogleIdProvider: FindOneByGoogleIdProvider,
+    // Inject the create google user provider
+    private readonly createGoogleUserProvider: CreateGoogleUserProvider,
   ) {}
 
   /**
@@ -165,5 +173,23 @@ export class UsersService {
       // If user does not exist, return a 404 error with the error message
       throw new NotFoundException(`User with id ${id} not found`);
     }
+  }
+
+  /**
+   * Find a user by google id
+   * @param {string} googleId
+   * @returns {Promise<User | null>}
+   */
+  async findOneByGoogleId(googleId: string): Promise<User | null> {
+    return this.findOneByGoogleIdProvider.findOneByGoogleId(googleId);
+  }
+
+  /**
+   * Create a new user from Google
+   * @param {GoogleUser} googleUser
+   * @returns {Promise<User>}
+   */
+  async createGoogleUser(googleUser: GoogleUser): Promise<User> {
+    return this.createGoogleUserProvider.createGoogleUser(googleUser);
   }
 }

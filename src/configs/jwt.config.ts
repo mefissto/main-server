@@ -17,4 +17,6 @@ export default registerAs(JWTConfig.NAME, () => ({
     process.env.JWT_REFRESH_TOKEN_TTL ?? '86400',
     10,
   ),
+  [JWTConfig.GOOGLE_CLIENT_ID]: process.env.GOOGLE_CLIENT_ID,
+  [JWTConfig.GOOGLE_CLIENT_SECRET]: process.env.GOOGLE_CLIENT_SECRET,
 }));

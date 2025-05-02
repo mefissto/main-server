@@ -38,8 +38,39 @@ export class User {
     type: 'varchar',
     length: 96,
     select: false,
+    nullable: true,
   })
-  password: string;
+  password?: string;
+
+  @ApiProperty({ description: 'Google ID of the user' })
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  googleId?: string;
+
+  @ApiProperty({ description: 'Account image of the user' })
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  accountImage?: string;
+
+  @ApiProperty({ description: 'First name of the user' })
+  @Column({
+    type: 'varchar',
+    length: 96,
+    nullable: true,
+  })
+  firstName?: string;
+
+  @ApiProperty({ description: 'Last name of the user' })
+  @Column({
+    type: 'varchar',
+    length: 96,
+    nullable: true,
+  })
+  lastName?: string;
 
   @ApiProperty({ description: 'Date when the user was created' })
   @CreateDateColumn()

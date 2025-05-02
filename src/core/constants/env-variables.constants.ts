@@ -67,4 +67,10 @@ export namespace JWTConfig {
 
   /** The environment variable for the JWT refresh token TTL. */
   export const JWT_REFRESH_TOKEN_TTL = 'refreshTokenTtl';
+
+  /** The environment variable for the google client id */
+  export const GOOGLE_CLIENT_ID = 'googleClientId';
+
+  /** The environment variable for the google client secret */
+  export const GOOGLE_CLIENT_SECRET = 'googleClientSecret';
 }

@@ -9,15 +9,18 @@ import { BcryptProvider } from './providers/bcrypt.provider';
 import { GenerateTokensProvider } from './providers/generate-tokens.provider';
 import { HashingProvider } from './providers/hashing.provider';
 import { RefreshTokensProvider } from './providers/refresh-tokens.provider';
+import { GoogleAuthenticationService } from './social-authentication/providers/google-authentication.service';
+import { SocialAuthenticationController } from './social-authentication/social-authentication.controller';
 
 @Module({
-  controllers: [AuthController],
+  controllers: [AuthController, SocialAuthenticationController],
   imports: [forwardRef(() => UsersModule), JwtModule],
   providers: [
     AuthService,
     GenerateTokensProvider,
     RefreshTokensProvider,
     { provide: HashingProvider, useClass: BcryptProvider },
+    GoogleAuthenticationService,
   ],
   exports: [AuthService, HashingProvider],
 })
