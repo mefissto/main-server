@@ -1,5 +1,6 @@
 import { Post } from '@features/posts/entities/post.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -37,9 +38,11 @@ export class User {
   @Column({
     type: 'varchar',
     length: 96,
-    select: false,
     nullable: true,
   })
+  // Exclude password from the response
+  // Works together with ClassSerializerInterceptor in the controller
+  @Exclude()
   password?: string;
 
   @ApiProperty({ description: 'Google ID of the user' })
@@ -47,6 +50,9 @@ export class User {
     type: 'varchar',
     nullable: true,
   })
+  // Exclude googleId from the response
+  // Works together with ClassSerializerInterceptor in the controller
+  @Exclude()
   googleId?: string;
 
   @ApiProperty({ description: 'Account image of the user' })

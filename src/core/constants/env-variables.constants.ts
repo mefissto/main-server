@@ -7,6 +7,9 @@ export namespace AppConfig {
 
   /** The environment variable for the application environment. */
   export const ENVIRONMENT = 'environment';
+
+  /** The environment variable for the api version */
+  export const API_VERSION = 'apiVersion';
 }
 
 /**

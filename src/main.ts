@@ -44,6 +44,13 @@ async function bootstrap() {
     SwaggerModule.createDocument(app, SWAGGER_CONFIG);
   SwaggerModule.setup(SWAGGER_DOCS_PATH, app, documentFactory);
 
+  /**
+   * Global Interceptors
+   */
+  // app.useGlobalInterceptors(
+  // new CustomInterceptor(),
+  // );
+
   await app.listen(process.env.APP_PORT ?? 3000);
 }
 bootstrap();

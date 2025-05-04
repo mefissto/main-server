@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 
 import appConfig from '@configs/app.config';
@@ -17,6 +17,7 @@ import { UsersModule } from '@features/users/users.module';
 
 import { AccessTokenGuard } from '@core/guards/access-token.guard';
 import { AuthenticationGuard } from '@core/guards/authentication.guard';
+import { DataResponseInterceptor } from '@core/interceptors/data-response.interceptor';
 
 import { AppController } from './app.controller';
 
@@ -48,6 +49,10 @@ const envFilePath = process.env.NODE_ENV
     {
       provide: APP_GUARD,
       useClass: AuthenticationGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DataResponseInterceptor,
     },
     AccessTokenGuard,
   ],

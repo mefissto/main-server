@@ -4,4 +4,5 @@ import { AppConfig } from '@constants/env-variables.constants';
 
 export default registerAs(AppConfig.NAME, () => ({
   [AppConfig.ENVIRONMENT]: process.env.NODE_ENV || 'production',
+  [AppConfig.API_VERSION]: process.env.API_VERSION,
 }));
