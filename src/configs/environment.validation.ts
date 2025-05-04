@@ -10,6 +10,15 @@ export default Joi.object({
     .default('development'),
   APP_PORT: Joi.number().default(3000),
   API_VERSION: Joi.string().required(),
+
+  // AWS
+  AWS_PUBLIC_BUCKET_NAME: Joi.string().required(),
+  AWS_REGION: Joi.string().required(),
+  AWS_CLOUDFRONT_URL: Joi.string().required(),
+  AWS_ACCESS_KEY_ID: Joi.string().required(),
+  AWS_SECRET_ACCESS_KEY: Joi.string().required(),
+
+  // DATABASE
   DATABASE_HOST: Joi.string().required(),
   DATABASE_PORT: Joi.number().default(5432),
   DATABASE_USERNAME: Joi.string().required(),
@@ -17,6 +26,8 @@ export default Joi.object({
   DATABASE_NAME: Joi.string().required(),
   DATABASE_SYNCHRONIZE: Joi.boolean().default(false),
   DATABASE_AUTOLOAD_ENTITIES: Joi.boolean().default(false),
+
+  // JWT
   JWT_SECRET: Joi.string().required(),
   JWT_TOKEN_AUDIENCE: Joi.string().required(),
   JWT_TOKEN_ISSUER: Joi.string().required(),

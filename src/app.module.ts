@@ -13,6 +13,7 @@ import { AuthModule } from '@features/auth/auth.module';
 import { MetaOptionsModule } from '@features/meta-options/meta-options.module';
 import { PostsModule } from '@features/posts/posts.module';
 import { TagsModule } from '@features/tags/tags.module';
+import { UploadsModule } from '@features/uploads/uploads.module';
 import { UsersModule } from '@features/users/users.module';
 
 import { AccessTokenGuard } from '@core/guards/access-token.guard';
@@ -43,6 +44,7 @@ const envFilePath = process.env.NODE_ENV
     TagsModule,
     AuthModule,
     MetaOptionsModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [

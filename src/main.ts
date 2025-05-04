@@ -1,6 +1,8 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
+import { config } from 'aws-sdk';
 
 import { CORS_CONFIG } from '@configs/cors.config';
 import { SWAGGER_CONFIG } from '@configs/swagger';
@@ -8,6 +10,7 @@ import {
   APP_GLOBAL_PREFIX,
   SWAGGER_DOCS_PATH,
 } from '@constants/common.constants';
+import { AppConfig } from '@constants/env-variables.constants';
 
 import { AppModule } from './app.module';
 
@@ -50,6 +53,20 @@ async function bootstrap() {
   // app.useGlobalInterceptors(
   // new CustomInterceptor(),
   // );
+
+  // Setup AWS SDK config
+  const configService = app.get(ConfigService);
+  config.update({
+    credentials: {
+      accessKeyId: configService.get(
+        `${AppConfig.NAME}.${AppConfig.AWS_ACCESS_KEY_ID}`,
+      ),
+      secretAccessKey: configService.get(
+        `${AppConfig.NAME}.${AppConfig.AWS_SECRET_ACCESS_KEY}`,
+      ),
+    },
+    region: configService.get(`${AppConfig.NAME}.${AppConfig.AWS_REGION}`),
+  });
 
   await app.listen(process.env.APP_PORT ?? 3000);
 }

@@ -10,6 +10,21 @@ export namespace AppConfig {
 
   /** The environment variable for the api version */
   export const API_VERSION = 'apiVersion';
+
+  /** The environment variable for the AWS S3 bucket name. */
+  export const AWS_PUBLIC_BUCKET_NAME = 'awsPublicBucketName';
+
+  /** The environment variable for the AWS region. */
+  export const AWS_REGION = 'awsRegion';
+
+  /** The environment variable for the AWS CloudFront URL. */
+  export const AWS_CLOUDFRONT_URL = 'awsCloudfrontUrl';
+
+  /** The environment variable for the AWS access key ID. */
+  export const AWS_ACCESS_KEY_ID = 'awsAccessKeyId';
+
+  /** The environment variable for the AWS secret access key. */
+  export const AWS_SECRET_ACCESS_KEY = 'awsSecretAccessKey';
 }
 
 /**
